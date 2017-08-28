@@ -20,6 +20,8 @@ To clone the repository locally, simply run the following command in the directo
 
 ## Let's Play
 
+To play the game remotely, use the following [URL](https://apt00100100.github.io/frontend-nanodegree-arcade-game/)
+
 To play the game locally, open the index.html file in a browser (Preferably Chrome)
 
 The goal of this game is to avoid the bugs and reach the water safely.
