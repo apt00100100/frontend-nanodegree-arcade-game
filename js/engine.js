@@ -31,7 +31,7 @@ var Engine = (function(global) {
         ctx,
         lastTime,
         areResourcesLoaded,
-        isGameOver;
+        isGameOver = true;
 
     // Global debug draw bool (collision rects)
     Entity.debugDrawEnabled = false;
@@ -316,8 +316,9 @@ var Engine = (function(global) {
         'images/char-boy.png'
     ]);
     Resources.onReady(function () {
-        areResourcesLoaded = true;
         reset();
+        areResourcesLoaded = true;
+        isGameOver = true;
         render();
     });
 
