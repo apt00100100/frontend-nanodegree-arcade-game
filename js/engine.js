@@ -14,13 +14,6 @@
  * a little simpler to work with.
  */
 
-var newGameInput, gameStatus, canvas;
-var allEnemies = [];
-var maxEnemies = 7;
-var spawnEnemyTimeouts = [];
-var player;
-var waterEntity;
-
 var Engine = (function(global) {
     /* Predefine the variables we'll be using within this scope,
      * create the canvas element, grab the 2D context for that canvas
@@ -177,8 +170,8 @@ var Engine = (function(global) {
         });
 
         // Remove any enemies that have gone off screen
-        while (Enemy.scheduleToRemove.length > 0) {
-            allEnemies.splice(allEnemies.indexOf(Enemy.scheduleToRemove.shift()), 1);
+        while (scheduleEnemiesToRemove.length > 0) {
+            allEnemies.splice(allEnemies.indexOf(scheduleEnemiesToRemove.shift()), 1);
         }
     }
 
@@ -248,6 +241,7 @@ var Engine = (function(global) {
 
         renderEntities();
 
+        // Add a gray overlay so the user knows the input is locked
         if (isGameOver) {
             ctx.save();
             ctx.fillStyle = 'rgba(0,0,0,0.4)';
@@ -277,6 +271,9 @@ var Engine = (function(global) {
         ctx.restore();
     }
 
+    /*
+        This method will spawn enemies in a single row, and add a timer for continued spawning
+     */
     function insertEnemy (row) {
 
         var timeToWait = range(1000, 4000); // 1-4 seconds
@@ -289,6 +286,9 @@ var Engine = (function(global) {
         allEnemies.push(enemy);
     }
 
+    /*
+        This is the main entry point for spawning enemies
+     */
     function insertEnemies () {
 
         // Spawn a few enemies so you can't just run to the end
@@ -296,12 +296,10 @@ var Engine = (function(global) {
             var enemy = new Enemy(i);
             enemy.xPos = range(0, canvas.width / 2);
             allEnemies.push(enemy);
-        }
 
-        // Spawn with timer
-        insertEnemy(1);
-        insertEnemy(2);
-        insertEnemy(3);
+            // Insert enemy with timer logic
+            insertEnemy(i);
+        }
     }
 
     /* Go ahead and load all of the images we know we're going to need to

@@ -1,4 +1,17 @@
 /**
+ * GLOBAL VARIABLES
+ * ======================================
+ */
+var newGameInput, gameStatus, canvas;
+var allEnemies = [];
+var maxEnemies = 7;
+var spawnEnemyTimeouts = [];
+var scheduleEnemiesToRemove = [];
+var player;
+var waterEntity;
+
+
+/**
  * Entity Class
  * @constructor
  */
@@ -78,16 +91,13 @@ var Enemy = function(row, width, height) {
 Enemy.prototype = Object.create(Entity.prototype);
 Enemy.prototype.constructor = Enemy;
 
-// Static array
-Enemy.scheduleToRemove = [];
-
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
     this.xPos += this.speed * dt;
 
-    if (this.xPos > canvas.width && Enemy.scheduleToRemove.indexOf(this) < 0) {
-        Enemy.scheduleToRemove.push(this);
+    if (this.xPos > canvas.width && scheduleEnemiesToRemove.indexOf(this) < 0) {
+        scheduleEnemiesToRemove.push(this);
     }
 };
 
@@ -135,7 +145,7 @@ Player.prototype.handleInput = function (key) {
         case 'left':    this.col = Math.max(this.col - 1, 0); break;
         case 'right':   this.col = Math.min(this.col + 1, 4); break;
     }
-    player.calculatePosition();
+    this.calculatePosition();
 };
 Player.prototype.calculatePosition = function () {
     this.xPos = this.col * 101;
